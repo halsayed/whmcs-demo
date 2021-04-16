@@ -10,9 +10,9 @@ import urllib3
 urllib3.disable_warnings()
 
 # API configuration and parameters ...
-pc_address = '127.0.0.1'
+pc_address = '10.38.7.9'
 username = 'admin'
-password = os.environ.get('PASSWORD')  # change the password to a suitable value
+password = os.environ.get('PASSWORD', 'nx2Tech911!')  # change the password to a suitable value
 authorization = base64.b64encode(f'{username}:{password}'.encode()).decode()
 url = f'https://{pc_address}:9440/api/nutanix/v3'
 kwargs = {
@@ -24,7 +24,7 @@ kwargs = {
 # ==========================================================================================
 # Define the new VM parameters
 # ==========================================================================================
-vm_uuid = 'bc0af2a2-7e75-4815-b0fe-60378b024556'
+vm_uuid = 'c700239e-facf-44be-b7ed-34b277f784b2'
 print(f'===========================================\nGet VM average usage for last 5min\n===========================================')
 
 payload = {
@@ -34,8 +34,8 @@ payload = {
     'group_member_attributes': [
         {'attribute': 'hypervisor_cpu_usage_ppm', 'operation': 'AVG'},
         {'attribute': 'memory_usage_ppm', 'operation': 'AVG'},
-        {'attribute': 'hypervisor_num_received_bytes', 'operation': 'AVG'},
-        {'attribute': 'hypervisor_num_transmitted_bytes', 'operation': 'AVG'}
+        {'attribute': 'hypervisor_num_received_bytes'},
+        {'attribute': 'hypervisor_num_transmitted_bytes'}
     ],
     'interval_end_ms': int(time()*1000),
     'interval_start_ms': int((time()-300)*1000),

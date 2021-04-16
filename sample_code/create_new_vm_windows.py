@@ -10,7 +10,7 @@ urllib3.disable_warnings()
 # API configuration and parameters ...
 pc_address = '10.38.15.9'
 username = 'admin'
-password = os.environ.get('PASSWORD', 'nx2Tech911!')  # change the password to a suitable value
+password = os.environ.get('PASSWORD', 'test123')  # change the password to a suitable value
 authorization = base64.b64encode(f'{username}:{password}'.encode()).decode()
 url = f'https://{pc_address}:9440/api/nutanix/v3'
 kwargs = {
@@ -21,15 +21,15 @@ kwargs = {
 # ==========================================================================================
 # Define the new VM parameters
 # ==========================================================================================
-vm_name = 'test_vm_api'
+vm_name = 'test_windows'
 sockets = 2
 vcpu_per_socket = 1
-memory = 4096
-network_uuid = '63a18057-850f-41b7-9519-dd9de0d3fc85'
-os_image_uuid = 'e0608d00-79b9-4a96-b08e-205fcf214d03'
-os_image_size = 10240   # in MiB
-cluster_uuid = '0005bc60-eed7-5c6c-3f92-ac1f6b64af76'
-cloud_init = "#cloud-config\nssh_pwauth: True\nchpasswd:\n  list: |\n     ubuntu:nutanix/4u\n  expire: False\nusers:\n  - name: ubuntu\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    shell: /bin/bash"
+memory = 8192
+network_uuid = '14134694-2bbb-4584-a70c-2a846867a77e'
+os_image_uuid = '4c43a99c-af61-405f-85a9-6b51e61a5220'
+cluster_uuid = '0005bfd5-7d69-4717-6ea5-ac1f6b18ef63'
+with open('sysprep.xml', 'r') as file:
+    unattend_xml = file.read()
 
 # ==========================================================================================
 # Construct Post payload and perform API call
@@ -54,12 +54,12 @@ payload = {
                         'kind': 'image',
                         'uuid': os_image_uuid
                     },
-                    'disk_size_mib': os_image_size
                 }
             ],
             'guest_customization': {
-                'cloud_init': {
-                    'user_data': base64.b64encode(cloud_init.encode()).decode()
+                'sysprep': {
+                    'install_type': 'PREPARED',
+                    'unattend_xml': base64.b64encode(unattend_xml.encode()).decode()
                 }
             },
             'nic_list': [

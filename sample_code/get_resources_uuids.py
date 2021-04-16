@@ -7,9 +7,9 @@ import urllib3
 urllib3.disable_warnings()
 
 # API configuration and parameters ...
-pc_address = '127.0.0.1'
+pc_address = '10.38.15.9'
 username = 'admin'
-password = os.environ.get('PASSWORD')  # change the password to a suitable value
+password = os.environ.get('PASSWORD', 'nx2Tech911!')  # change the password to a suitable value
 authorization = base64.b64encode(f'{username}:{password}'.encode()).decode()
 url = f'https://{pc_address}:9440/api/nutanix/v3'
 kwargs = {
